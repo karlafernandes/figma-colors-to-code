@@ -1,11 +1,11 @@
 export const json = function(params) {
   const result = {
     colors: params.map(item => {
-        return {name: item.name, value: item.rgb}
+        const color = formatColor(item);
+        return {name: item.name, value: color}
       })
   }
   
-  // return result;
   return JSON.stringify(result, null, 2);
 }
 
@@ -13,7 +13,8 @@ export const css = function(params) {
   const start = ":root {"
   const end = "}"
   const properties = params.map(item => {
-    return `  --${item.name.replace(" ", '-').toLowerCase()}: ${item.rgb};`;
+    const color = formatColor(item);
+    return `  --${item.name.replace(" ", '-').toLowerCase()}: ${color};`;
     }).join('\n');
 
   const result = start + "\n" + properties + "\n" + end;
@@ -23,7 +24,8 @@ export const css = function(params) {
 
 export const scss = function(params) {
   const properties = params.map(item => {
-    return `$${item.name.replace(" ", '-').toLowerCase()}: ${item.rgb};`;
+    const color = formatColor(item);
+    return `$${item.name.replace(" ", '-').toLowerCase()}: ${color};`;
     }).join('\n');
 
   const result = properties;
@@ -31,3 +33,10 @@ export const scss = function(params) {
   return result;
 }
 
+const formatColor = (style) => {
+  if (style.opacity < 1) {
+    return style.rgba;
+  } else {
+    return style.hex;
+  }
+}

@@ -12,13 +12,16 @@ const colorCollection = styles.map(style => {
   const r = color.type === 'SOLID' ? Math.round(color.color.r * 255) : null;
   const g = color.type === 'SOLID' ? Math.round(color.color.g * 255) : null;
   const b = color.type === 'SOLID' ? Math.round(color.color.b * 255) : null;
+  const a = color.opacity;
   
   const rgb = `rgb(${r}, ${g}, ${b})`;
+  const rgba = `rgb(${r}, ${g}, ${b}, ${a})`;
   const hex = RGB2HEX(r, g, b).toUpperCase();
 
   return {
     name: style.name,
     rgb: rgb,
+    rgba: rgba,
     hex: hex,
     opacity: color.opacity,
     // remote: color.remote,
