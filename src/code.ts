@@ -19,6 +19,7 @@ const colorCollection = styles.map(style => {
   const hex = RGB2HEX(r, g, b).toUpperCase();
 
   return {
+    type: color.type,
     name: style.name,
     rgb: rgb,
     rgba: rgba,
@@ -36,8 +37,6 @@ figma.ui.onmessage = message => {
       type: "collect-tokens",
       data: colorCollection
     });
-
-    // console.log(colorCollection);
   }
 
   // figma.closePlugin();

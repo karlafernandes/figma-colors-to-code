@@ -1,9 +1,10 @@
 export const json = function(params) {
   const result = {
-    colors: params.map(item => {
-        const color = formatColor(item);
-        return {name: item.name, value: color}
-      })
+    colors: params.filter(item => item.type === 'SOLID').map(item => {
+      console.log(item.type);
+      const color = formatColor(item);
+      return {name: item.name, value: color}
+    })
   }
   
   return JSON.stringify(result, null, 2);
@@ -12,7 +13,7 @@ export const json = function(params) {
 export const css = function(params) {
   const start = ":root {"
   const end = "}"
-  const properties = params.map(item => {
+  const properties = params.filter(item => item.type === 'SOLID').map(item => {
     const color = formatColor(item);
     return `  --${item.name.replace(" ", '-').toLowerCase()}: ${color};`;
     }).join('\n');
@@ -23,7 +24,7 @@ export const css = function(params) {
 }
 
 export const scss = function(params) {
-  const properties = params.map(item => {
+  const properties = params.filter(item => item.type === 'SOLID').map(item => {
     const color = formatColor(item);
     return `$${item.name.replace(" ", '-').toLowerCase()}: ${color};`;
     }).join('\n');
@@ -34,9 +35,10 @@ export const scss = function(params) {
 }
 
 const formatColor = (style) => {
-  if (style.opacity < 1) {
-    return style.rgba;
-  } else {
-    return style.hex;
-  }
+    if (style.opacity < 1) {
+      return style.rgba;
+    } else {
+      return style.hex;
+    }
+
 }

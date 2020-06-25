@@ -7,9 +7,9 @@ onmessage = message => {
   if (message.data.pluginMessage.type == "collect-tokens") {
 
     // TODO: コピーボタン
-    // TODO: HEXとRGBA
     // TODO: prefixの付与
     // TODO: カスタムテンプレート
+    // TODO: SOLID以外の対応
 
     const buttons = document.querySelectorAll('#format > button');
     const output: HTMLInputElement =<HTMLInputElement>document.getElementById('output');
