@@ -14,7 +14,7 @@ export const css = function(params) {
   const end = "}"
   const properties = params.filter(item => item.type === 'SOLID').map(item => {
     const color = formatColor(item);
-    return `  --${item.name.replace(" ", '-').toLowerCase()}: ${color};`;
+    return `  --${item.name.replace(/ /g, '-').replace(/-\/-/g, '-').toLowerCase()}: ${color};`;
     }).join('\n');
 
   const result = start + "\n" + properties + "\n" + end;
@@ -25,7 +25,7 @@ export const css = function(params) {
 export const scss = function(params) {
   const properties = params.filter(item => item.type === 'SOLID').map(item => {
     const color = formatColor(item);
-    return `$${item.name.replace(" ", '-').toLowerCase()}: ${color};`;
+    return `$${item.name.replace(/ /g, '-').replace(/-\/-/g, '-').toLowerCase()}: ${color};`;
     }).join('\n');
 
   const result = properties;
