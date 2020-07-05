@@ -1,6 +1,6 @@
 {
-  "name": "Collect Colors",
-  "id": "738168449509241862",
+  "name": "Colors to Code",
+  "id": "857997781988109369",
   "api": "1.0.0",
   "main": "dist/code.js",
   "ui": "dist/ui.html"

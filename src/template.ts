@@ -1,7 +1,6 @@
 export const json = function(params) {
   const result = {
     colors: params.filter(item => item.type === 'SOLID').map(item => {
-      console.log(item.type);
       const color = formatColor(item);
       return {name: item.name, value: color}
     })
@@ -40,5 +39,4 @@ const formatColor = (style) => {
     } else {
       return style.hex;
     }
-
 }

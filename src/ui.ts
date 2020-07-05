@@ -6,13 +6,13 @@ parent.postMessage({ pluginMessage: { type: 'collect-tokens' } }, '*');
 onmessage = message => {
   if (message.data.pluginMessage.type == "collect-tokens") {
 
-    // TODO: コピーボタン
     // TODO: prefixの付与
     // TODO: カスタムテンプレート
-    // TODO: SOLID以外の対応
 
     const buttons = document.querySelectorAll('#format > button');
     const output: HTMLInputElement =<HTMLInputElement>document.getElementById('output');
+    const copy = document.getElementById('copy');
+
     const data = message.data.pluginMessage.data;
 
     const switchFormat = (format) => {
@@ -43,6 +43,11 @@ onmessage = message => {
       current.classList.remove(activeClass);
       selected.classList.add(activeClass);
     }
+
+    copy.addEventListener('click', () => {
+      output.select();
+      document.execCommand('copy');
+    })
 
     buttons.forEach((button) => {
       button.addEventListener('click', switchFormatHandler)

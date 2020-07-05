@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 560, height: (41 + 40 + 320) });
+figma.showUI(__html__, { width: 320, height: (41 + 56 + 320) });
 
 // RGBをHEXに変換する
 const RGB2HEX = (r, g, b) => '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
@@ -12,7 +12,7 @@ const colorCollection = styles.map(style => {
   const r = color.type === 'SOLID' ? Math.round(color.color.r * 255) : null;
   const g = color.type === 'SOLID' ? Math.round(color.color.g * 255) : null;
   const b = color.type === 'SOLID' ? Math.round(color.color.b * 255) : null;
-  const a = color.opacity;
+  const a = Math.round(color.opacity * 100) / 100;
   
   const rgb = `rgb(${r}, ${g}, ${b})`;
   const rgba = `rgb(${r}, ${g}, ${b}, ${a})`;
