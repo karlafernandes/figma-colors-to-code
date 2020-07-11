@@ -5,6 +5,7 @@ export const json = function(params) {
       return {
         name: item.name,
         hex: item.hex,
+        hexa: item.hexa,
         rgb: item.rgb,
         rgba: item.rgba,
         hsl: item.hsl,

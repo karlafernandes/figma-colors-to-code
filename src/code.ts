@@ -1,8 +1,31 @@
 figma.showUI(__html__, { width: 560, height: (41 + 56 + 320) });
 
 // RGBをHEXに変換する
-const rgb2hex = (r, g, b) => {
-  return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+const rgb2hex = (r, g, b, a?) => {
+  r = r.toString(16);
+  g = g.toString(16);
+  b = b.toString(16);
+  a = Math.round(a / 100 * 255).toString(16);
+
+  if (r.length == 1)
+    r = "0" + r;
+  if (g.length == 1)
+    g = "0" + g;
+  if (b.length == 1)
+    b = "0" + b;
+  if (a.length == 1)
+    a = "0" + a;
+
+  // Alpha
+  if(a === "NaN") {
+    return "#" + r + g + b;
+  } else {
+    return "#" + r + g + b + a;
+  }
+
+  return "#" + r + g + b + a;
+
+  // return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 const rgb2hsl = (r, g, b, a?) => {
@@ -68,6 +91,7 @@ const colorCollection = styles.map(style => {
   const rgb = `rgb(${r}, ${g}, ${b})`;
   const rgba = `rgb(${r}, ${g}, ${b}, ${a / 100})`;
   const hex = rgb2hex(r, g, b).toUpperCase();
+  const hexa = rgb2hex(r, g, b, a).toUpperCase();
   const hsl = rgb2hsl(r, g, b);
   const hsla = rgb2hsl(r, g, b, a);
 
@@ -77,6 +101,7 @@ const colorCollection = styles.map(style => {
     rgb: rgb,
     rgba: rgba,
     hex: hex,
+    hexa: hexa,
     hsl: hsl,
     hsla: hsla,
     opacity: color.opacity,
