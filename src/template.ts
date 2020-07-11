@@ -2,7 +2,15 @@ export const json = function(params) {
   const result = {
     colors: params.filter(item => item.type === 'SOLID').map(item => {
       const color = formatColor(item);
-      return {name: item.name, value: color}
+      return {
+        name: item.name,
+        hex: item.hex,
+        rgb: item.rgb,
+        rgba: item.rgba,
+        hsl: item.hsl,
+        hsla: item.hsla,
+        opacity: item.opacity
+      }
     })
   }
   
