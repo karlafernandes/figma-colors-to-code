@@ -1,7 +1,57 @@
-figma.showUI(__html__, { width: 320, height: (41 + 56 + 320) });
+figma.showUI(__html__, { width: 560, height: (41 + 56 + 320) });
 
 // RGBをHEXに変換する
-const RGB2HEX = (r, g, b) => '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+const rgb2hex = (r, g, b) => {
+  return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+}
+
+const rgb2hsl = (r, g, b, a?) => {
+  const RGB_MAX = 255;
+	const HUE_MAX = 360;
+	const SATURATION_MAX = 100;
+	const LIGHTNESS_MAX = 100;
+
+	const max = Math.max(r, g, b);
+	const min = Math.min(r, g, b);
+	let h, s, l;
+
+	// Hue
+	const hp = HUE_MAX / 6;
+	if (max == min) {
+		h = 0;
+	} else if (r == max) {
+		h = hp * ((g - b) / (max - min));
+	} else if (g == max) {
+		h = hp * ((b - r) / (max - min)) + HUE_MAX / 3;
+	} else {
+		h = hp * ((r - g) / (max - min)) + HUE_MAX * 2 / 3;
+	}
+	if (h < 0) {
+		h += HUE_MAX;
+	}
+
+	// Saturation
+	const cnt = (max + min) / 2;
+	if (cnt < RGB_MAX / 2) {
+		if (max + min <= 0) {
+			s = 0;
+		} else {
+			s = (max - min) / (max + min) * SATURATION_MAX;
+		}
+	} else {
+		s = (max - min) / (RGB_MAX * 2 - max - min) * SATURATION_MAX;
+	}
+
+	// Lightness
+  l = (max + min) / RGB_MAX / 2 * LIGHTNESS_MAX;
+  
+  // Alpha
+  if(!a) {
+    return `hsl(${Math.round(h)}, ${Math.round(s)}, ${Math.round(l)})`;
+  } else {
+    return `hsla(${Math.round(h)}, ${Math.round(s)}, ${Math.round(l)}, ${a}%)`;
+  }
+}
 
 // Color Stylesで定義されたスタイル
 const styles = figma.getLocalPaintStyles();
@@ -12,11 +62,14 @@ const colorCollection = styles.map(style => {
   const r = color.type === 'SOLID' ? Math.round(color.color.r * 255) : null;
   const g = color.type === 'SOLID' ? Math.round(color.color.g * 255) : null;
   const b = color.type === 'SOLID' ? Math.round(color.color.b * 255) : null;
-  const a = Math.round(color.opacity * 100) / 100;
+
+  const a = Math.round(color.opacity * 100);
   
   const rgb = `rgb(${r}, ${g}, ${b})`;
-  const rgba = `rgb(${r}, ${g}, ${b}, ${a})`;
-  const hex = RGB2HEX(r, g, b).toUpperCase();
+  const rgba = `rgb(${r}, ${g}, ${b}, ${a / 100})`;
+  const hex = rgb2hex(r, g, b).toUpperCase();
+  const hsl = rgb2hsl(r, g, b);
+  const hsla = rgb2hsl(r, g, b, a);
 
   return {
     type: color.type,
@@ -24,6 +77,8 @@ const colorCollection = styles.map(style => {
     rgb: rgb,
     rgba: rgba,
     hex: hex,
+    hsl: hsl,
+    hsla: hsla,
     opacity: color.opacity,
     // remote: color.remote,
     // paints: color.paints,

@@ -1,4 +1,5 @@
-import './ui.css'
+import './ui.css';
+
 import { json, css, scss } from './template';
 
 parent.postMessage({ pluginMessage: { type: 'collect-tokens' } }, '*');
@@ -6,6 +7,7 @@ parent.postMessage({ pluginMessage: { type: 'collect-tokens' } }, '*');
 onmessage = message => {
   if (message.data.pluginMessage.type == "collect-tokens") {
 
+    // TODO: RGB, HSLへの変換
     // TODO: prefixの付与
     // TODO: カスタムテンプレート
 
@@ -14,6 +16,8 @@ onmessage = message => {
     const copy = document.getElementById('copy');
 
     const data = message.data.pluginMessage.data;
+
+    console.log(data);
 
     const switchFormat = (format) => {
       switch (format) {
@@ -44,9 +48,19 @@ onmessage = message => {
       selected.classList.add(activeClass);
     }
 
-    copy.addEventListener('click', () => {
+    copy.addEventListener('click', (e) => {
+      const label = copy.textContent;
+
       output.select();
       document.execCommand('copy');
+
+      copy.textContent = 'Copied!';
+      copy.style.fontWeight = 'bold';
+      
+      setTimeout(function() {
+        copy.textContent = label;
+        copy.style.fontWeight = '';
+      }, 1000)
     })
 
     buttons.forEach((button) => {

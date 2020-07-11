@@ -5,6 +5,8 @@ onmessage = message => {
     if (message.data.pluginMessage.type == "collect-tokens") {
         // TODO: prefixの付与
         // TODO: カスタムテンプレート
+        // TODO: コードハイライト
+        // TODO: コピー時のフィードバック
         const buttons = document.querySelectorAll('#format > button');
         const output = document.getElementById('output');
         const copy = document.getElementById('copy');
