@@ -1,7 +1,17 @@
 <nav class="Tab" id="format">
-  <button class="active" data-format="json">JSON</button>
-  <button data-format="css">CSS</button data-format="json">
-  <button data-format="scss">SCSS</button data-format="json">
+  <div class="Tab-buttonGroup">
+    <button class="active" data-format="json">JSON</button>
+    <button data-format="css">CSS</button data-format="json">
+    <button data-format="scss">SCSS</button data-format="json">
+  </div>
+  <div class="Tab-options">
+    <select name="options" id="options">
+      <option value="default">Hex + RGBA</option>
+      <option value="hex">Hex + HexA</option>
+      <option value="rgb">RGB + RGBA</option>
+      <option value="hsl">HSL + HSLA</option>
+    </select>
+  </div>
 </nav>
 
 <textarea class="Output" id="output" cols="30" rows="10" readonly></textarea>

@@ -6,29 +6,35 @@ parent.postMessage({ pluginMessage: { type: 'collect-tokens' } }, '*');
 
 onmessage = message => {
   if (message.data.pluginMessage.type == "collect-tokens") {
-
     // TODO: RGB, HSLへの変換
-    // TODO: prefixの付与
+    // TODO: prefix, suffixの付与
     // TODO: カスタムテンプレート
 
-    const buttons = document.querySelectorAll('#format > button');
+    const buttons = document.querySelectorAll('#format button');
+    const options = <HTMLSelectElement>document.getElementById('options');
+
     const output: HTMLInputElement =<HTMLInputElement>document.getElementById('output');
     const copy = document.getElementById('copy');
 
     const data = message.data.pluginMessage.data;
 
-    console.log(data);
+    // let color = (<HTMLInputElement>options).value;
+    let currentFormat = 'json';
+    let currentColor = 'default';
 
-    const switchFormat = (format) => {
+    console.log(currentFormat);
+    console.log(currentColor);
+
+    const switchFormat = (format, color?) => {
       switch (format) {
         case 'json':
           output.value = json(data)
           break;
         case 'css':
-          output.value = css(data)
+          output.value = css(data, color)
           break;
         case 'scss':
-          output.value = scss(data)
+          output.value = scss(data, color)
           break;
         default:
           output.value = json(data)
@@ -42,7 +48,15 @@ onmessage = message => {
       });
       const selected = e.target;
 
-      switchFormat(selected.dataset.format);
+      currentFormat = selected.dataset.format;
+
+      if(currentFormat === "json") {
+        options.disabled = true;
+      } else {
+        options.disabled = false;
+      }
+
+      switchFormat(currentFormat, currentColor);
 
       current.classList.remove(activeClass);
       selected.classList.add(activeClass);
@@ -63,8 +77,18 @@ onmessage = message => {
       }, 1000)
     })
 
-    buttons.forEach((button) => {
-      button.addEventListener('click', switchFormatHandler)
+    buttons.forEach((button: HTMLButtonElement) => {
+      button.addEventListener('click', switchFormatHandler);
+
+      if(button.classList.contains('active') && (button).dataset.format === "json") {
+        options.disabled = true;
+      }
+    })
+
+    options.addEventListener('change', (e) => {
+      currentColor = (<HTMLInputElement>event.target).value; 
+
+      switchFormat(currentFormat, currentColor);
     })
 
     switchFormat('json');

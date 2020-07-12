@@ -22,10 +22,6 @@ const rgb2hex = (r, g, b, a?) => {
   } else {
     return "#" + r + g + b + a;
   }
-
-  return "#" + r + g + b + a;
-
-  // return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
 }
 
 const rgb2hsl = (r, g, b, a?) => {
@@ -70,9 +66,9 @@ const rgb2hsl = (r, g, b, a?) => {
   
   // Alpha
   if(!a) {
-    return `hsl(${Math.round(h)}, ${Math.round(s)}, ${Math.round(l)})`;
+    return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
   } else {
-    return `hsla(${Math.round(h)}, ${Math.round(s)}, ${Math.round(l)}, ${a}%)`;
+    return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${a / 100})`;
   }
 }
 
@@ -89,7 +85,7 @@ const colorCollection = styles.map(style => {
   const a = Math.round(color.opacity * 100);
   
   const rgb = `rgb(${r}, ${g}, ${b})`;
-  const rgba = `rgb(${r}, ${g}, ${b}, ${a / 100})`;
+  const rgba = `rgba(${r}, ${g}, ${b}, ${a / 100})`;
   const hex = rgb2hex(r, g, b).toUpperCase();
   const hexa = rgb2hex(r, g, b, a).toUpperCase();
   const hsl = rgb2hsl(r, g, b);
