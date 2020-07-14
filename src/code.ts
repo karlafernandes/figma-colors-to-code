@@ -106,13 +106,46 @@ const colorCollection = styles.map(style => {
   }
 })
 
+async function getFormat() {
+  let code = await figma.clientStorage.getAsync('code')
+  let color = await figma.clientStorage.getAsync('color')
+
+  const format = {
+    code: code,
+    color: color
+  }
+
+  // console.log(format)
+
+  return format;
+}
+
+async function setFormat(codeFormat, colorFormat) {
+  await figma.clientStorage.setAsync('code', codeFormat)
+  await figma.clientStorage.setAsync('color', colorFormat)
+}
+
+const post = () => {
+  figma.ui.postMessage({
+    type: "collect-tokens",
+    data: colorCollection,
+    storage: storage
+  });
+}
+
+let storage;
+
+getFormat().then(result => {
+  storage = result
+}).then(post)
+
 figma.ui.onmessage = message => {
   if (message.type === 'collect-tokens') {
+    storage = message.storage;
 
-    figma.ui.postMessage({
-      type: "collect-tokens",
-      data: colorCollection
-    });
+    if(storage !== undefined) {
+      setFormat(storage.code, storage.color);
+    }
   }
 
   // figma.closePlugin();

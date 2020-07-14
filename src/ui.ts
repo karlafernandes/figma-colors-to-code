@@ -2,31 +2,64 @@ import './ui.css';
 
 import { json, css, scss } from './template';
 
+let currentCode;
+let currentColor;
+
+const buttons = document.querySelectorAll('#code button');
+const options = <HTMLSelectElement>document.getElementById('options');
+const output: HTMLInputElement =<HTMLInputElement>document.getElementById('output');
+const copy = document.getElementById('copy');
+const activeClass = 'active';
+
+const postFormat = (code, color) => {
+  parent.postMessage({ pluginMessage: { 
+    type: 'collect-tokens',
+    storage: {
+      code: code,
+      color: color
+    }
+  } }, '*');
+}
+
+copy.addEventListener('click', (e) => {
+  const label = copy.textContent;
+
+  output.select();
+  document.execCommand('copy');
+
+  copy.textContent = 'Copied!';
+  copy.style.fontWeight = 'bold';
+  
+  setTimeout(function() {
+    copy.textContent = label;
+    copy.style.fontWeight = '';
+  }, 1500)
+})
+
 parent.postMessage({ pluginMessage: { type: 'collect-tokens' } }, '*');
 
 onmessage = message => {
   if (message.data.pluginMessage.type == "collect-tokens") {
-    // TODO: RGB, HSLへの変換
+    // TODO: 値変更の保持
     // TODO: prefix, suffixの付与
     // TODO: カスタムテンプレート
 
-    const buttons = document.querySelectorAll('#format button');
-    const options = <HTMLSelectElement>document.getElementById('options');
-
-    const output: HTMLInputElement =<HTMLInputElement>document.getElementById('output');
-    const copy = document.getElementById('copy');
-
+    // データを受け取る
     const data = message.data.pluginMessage.data;
+    const storage = message.data.pluginMessage.storage;
 
-    // let color = (<HTMLInputElement>options).value;
-    let currentFormat = 'json';
-    let currentColor = 'default';
+    // storageにデータがあれば、そのデータを格納する
+    if(storage !== undefined && storage.code !== undefined || storage.color !== undefined) {
+      currentCode = storage.code;
+      currentColor = storage.color;
+    } else {
+      currentCode = 'json';
+      currentColor = 'default';
+    }
 
-    console.log(currentFormat);
-    console.log(currentColor);
-
-    const switchFormat = (format, color?) => {
-      switch (format) {
+    // データに応じて、表示するコードを切り替える
+    const switchFormat = (code, color) => {
+      switch (code) {
         case 'json':
           output.value = json(data)
           break;
@@ -39,58 +72,57 @@ onmessage = message => {
         default:
           output.value = json(data)
       }
+      
+      switchCode(currentCode);
+      switchColor(currentColor);
+      postFormat(code, color);
     }
 
-    const switchFormatHandler = (e) => {
-      const activeClass = 'active';
-      const current = Array.from(buttons).find((element) => {
-        return element.classList.contains(activeClass);
-      });
-      const selected = e.target;
+    // データに応じて、表示するタブを切り替える
+    const switchCode = (code) => {
+      const current = Array.from(buttons).find(button => button.classList.contains(activeClass));
+      const selected = Array.from(buttons).find((button: HTMLButtonElement) => button.dataset.code === code);
 
-      currentFormat = selected.dataset.format;
-
-      if(currentFormat === "json") {
+      if(code === "json") {
         options.disabled = true;
       } else {
         options.disabled = false;
       }
 
-      switchFormat(currentFormat, currentColor);
-
       current.classList.remove(activeClass);
       selected.classList.add(activeClass);
     }
 
-    copy.addEventListener('click', (e) => {
-      const label = copy.textContent;
+    // データに応じて、表示するタブを切り替える
+    const switchColor = (color) => {
+      const selected = Array.from(options.options).find((option) => option.value === color);
 
-      output.select();
-      document.execCommand('copy');
+      selected.selected = true
+    }
 
-      copy.textContent = 'Copied!';
-      copy.style.fontWeight = 'bold';
-      
-      setTimeout(function() {
-        copy.textContent = label;
-        copy.style.fontWeight = '';
-      }, 1000)
-    })
+    // コードを選ぶと現在値を変更する
+    const changeButton = (e) => {
+      const selected = e.target;
 
+      currentCode = selected.dataset.code;
+
+      switchFormat(currentCode, currentColor);
+    }
+
+    // console.log(storage)
+    
     buttons.forEach((button: HTMLButtonElement) => {
-      button.addEventListener('click', switchFormatHandler);
-
-      if(button.classList.contains('active') && (button).dataset.format === "json") {
-        options.disabled = true;
-      }
+      button.addEventListener('click', changeButton);
     })
 
+    // TODO: データに応じてselect切り替え！！！
     options.addEventListener('change', (e) => {
-      currentColor = (<HTMLInputElement>event.target).value; 
+      currentColor = (<HTMLInputElement>e.target).value;
 
-      switchFormat(currentFormat, currentColor);
+      switchFormat(currentCode, currentColor);
     })
 
-    switchFormat('json');
+    // init
+    switchFormat(currentCode, currentColor);
   }
 };
