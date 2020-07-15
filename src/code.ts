@@ -77,10 +77,16 @@ const styles = figma.getLocalPaintStyles();
 const colorCollection = styles.map(style => {
   const color = style.paints[0];
 
+  if(color.type !== 'SOLID'){
+    return false
+  };
+
+  // console.log(color.type === 'SOLID');
+
   // RGBの値を取得し、10進数で返す
-  const r = color.type === 'SOLID' ? Math.round(color.color.r * 255) : null;
-  const g = color.type === 'SOLID' ? Math.round(color.color.g * 255) : null;
-  const b = color.type === 'SOLID' ? Math.round(color.color.b * 255) : null;
+  const r = Math.round(color.color.r * 255);
+  const g = Math.round(color.color.g * 255);
+  const b = Math.round(color.color.b * 255);
 
   const a = Math.round(color.opacity * 100);
   
