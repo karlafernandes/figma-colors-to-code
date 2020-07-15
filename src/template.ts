@@ -6,13 +6,15 @@ export const json = function(params) {
       const color = defaultColor(item);
       return {
         name: item.name,
-        hex: item.hex,
-        hexa: item.hexa,
-        rgb: item.rgb,
-        rgba: item.rgba,
-        hsl: item.hsl,
-        hsla: item.hsla,
-        opacity: Math.round(item.opacity * 10) / 10
+        values: {
+          hex: item.hex,
+          hexa: item.hexa,
+          rgb: item.rgb,
+          rgba: item.rgba,
+          hsl: item.hsl,
+          hsla: item.hsla,
+          opacity: Math.round(item.opacity * 10) / 10
+        }
       }
     })
   }
