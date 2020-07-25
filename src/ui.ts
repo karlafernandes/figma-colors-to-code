@@ -95,9 +95,7 @@ onmessage = message => {
 
     // データに応じて、表示するタブを切り替える
     const switchColor = (color) => {
-      const selected = Array.from(options.options).find((option) => option.value === color);
-
-      selected.selected = true
+      options.value = color
     }
 
     // コードを選ぶと現在値を変更する
