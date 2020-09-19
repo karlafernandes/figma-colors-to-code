@@ -5,7 +5,9 @@ const rgb2hex = (r, g, b, a?) => {
   r = r.toString(16);
   g = g.toString(16);
   b = b.toString(16);
-  a = Math.round(a / 100 * 255).toString(16);
+  a = Math.round(a * 255).toString(16);
+
+  console.log(a)
 
   if (r.length == 1)
     r = "0" + r;
@@ -63,12 +65,12 @@ const rgb2hsl = (r, g, b, a?) => {
 
 	// Lightness
   l = (max + min) / RGB_MAX / 2 * LIGHTNESS_MAX;
-  
+
   // Alpha
   if(!a) {
     return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
   } else {
-    return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${a / 100})`;
+    return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${a})`;
   }
 }
 
@@ -81,17 +83,14 @@ const colorCollection = styles.map(style => {
     return false
   };
 
-  // console.log(color.type === 'SOLID');
-
   // RGBの値を取得し、10進数で返す
   const r = Math.round(color.color.r * 255);
   const g = Math.round(color.color.g * 255);
   const b = Math.round(color.color.b * 255);
-
-  const a = Math.round(color.opacity * 100);
+  const a = Math.round(color.opacity * 100) / 100;
   
   const rgb = `rgb(${r}, ${g}, ${b})`;
-  const rgba = `rgba(${r}, ${g}, ${b}, ${a / 100})`;
+  const rgba = `rgba(${r}, ${g}, ${b}, ${a})`;
   const hex = rgb2hex(r, g, b).toUpperCase();
   const hexa = rgb2hex(r, g, b, a).toUpperCase();
   const hsl = rgb2hsl(r, g, b);
@@ -106,7 +105,7 @@ const colorCollection = styles.map(style => {
     hexa: hexa,
     hsl: hsl,
     hsla: hsla,
-    opacity: color.opacity,
+    opacity: a,
     // remote: color.remote,
     // paints: color.paints,
   }
@@ -120,8 +119,6 @@ async function getFormat() {
     code: code,
     color: color
   }
-
-  // console.log(format)
 
   return format;
 }

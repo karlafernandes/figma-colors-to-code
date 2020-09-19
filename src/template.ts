@@ -13,7 +13,7 @@ export const json = function(params) {
           rgba: item.rgba,
           hsl: item.hsl,
           hsla: item.hsla,
-          opacity: Math.round(item.opacity * 10) / 10
+          opacity: item.opacity
         }
       }
     })
