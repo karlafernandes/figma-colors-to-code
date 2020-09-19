@@ -1,6 +1,6 @@
 import './ui.css';
 
-import { json, css, scss } from './template';
+import { json, css, scss, android } from './template';
 
 let currentCode;
 let currentColor;
@@ -63,11 +63,14 @@ onmessage = message => {
         case 'json':
           output.value = json(data)
           break;
-        case 'css':
+        case 'css': 
           output.value = css(data, color)
           break;
         case 'scss':
           output.value = scss(data, color)
+          break;
+        case 'android':
+          output.value = android(data, color)
           break;
         default:
           output.value = json(data)
@@ -83,7 +86,7 @@ onmessage = message => {
       const current = Array.from(buttons).find(button => button.classList.contains(activeClass));
       const selected = Array.from(buttons).find((button: HTMLButtonElement) => button.dataset.code === code);
 
-      if(code === "json") {
+      if(code === "json" || code === "android") {
         options.disabled = true;
       } else {
         options.disabled = false;

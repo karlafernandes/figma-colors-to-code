@@ -67,3 +67,23 @@ export const scss = function(params, format?) {
 
   return result;
 }
+
+export const android = function(params, format?) {
+  const start = `<?xml version="1.0" encoding="UTF-8"?>\n<resources>`
+  const end = `</resources>`
+  const properties = params.filter(item => item.type === 'SOLID').map(item => {
+    let color;
+
+    if(item.alpha < 1) {
+      color = item.hexa.replace(/#(......)(..)/g, '#$2$1')
+    } else {
+      color = item.hex
+    }
+
+    return `  <color name="${item.name.replace(/ /g, '-').replace(/-\/-/g, '-').toLowerCase()}">${color}</color>`
+  }).join('\n');
+
+  const result = start + "\n" + properties + "\n" + end;
+
+  return result;
+}
