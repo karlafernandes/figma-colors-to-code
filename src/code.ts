@@ -58,8 +58,8 @@ const rgb2hsl = (r, g, b, a?) => {
 			s = (max - min) / (max + min) * SATURATION_MAX;
 		}
 	} else {
-		s = (max - min) / (RGB_MAX * 2 - max - min) * SATURATION_MAX;
-	}
+    s = isNaN(s) ? 0 : (max - min) / (RGB_MAX * 2 - max - min) * SATURATION_MAX;
+  }
 
 	// Lightness
   l = (max + min) / RGB_MAX / 2 * LIGHTNESS_MAX;
