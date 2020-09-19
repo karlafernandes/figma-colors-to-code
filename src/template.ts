@@ -1,4 +1,4 @@
-const defaultColor = (style) => style.opacity < 1 ? style.rgba : style.hex;
+const defaultColor = (item) => item.alpha < 1 ? item.rgba : item.hex;
 
 export const json = function(params) {
   const result = {
@@ -13,7 +13,7 @@ export const json = function(params) {
           rgba: item.rgba,
           hsl: item.hsl,
           hsla: item.hsla,
-          opacity: item.opacity
+          alpha: item.alpha
         }
       }
     })
@@ -29,11 +29,11 @@ export const css = function(params, format?) {
     let color;
 
     if(format == "hex") {
-      color = item.opacity < 1 ? item.hexa : item.hex;
+      color = item.alpha < 1 ? item.hexa : item.hex;
     } else if(format == "rgb") {
-      color = item.opacity < 1 ? item.rgba : item.rgb;
+      color = item.alpha < 1 ? item.rgba : item.rgb;
     } else if(format == "hsl") {
-      color = item.opacity < 1 ? item.hsla : item.hsl;
+      color = item.alpha < 1 ? item.hsla : item.hsl;
     } else {
       color = defaultColor(item);
     }
@@ -51,11 +51,11 @@ export const scss = function(params, format?) {
     let color;
 
     if(format == "hex") {
-      color = item.opacity < 1 ? item.hexa : item.hex;
+      color = item.alpha < 1 ? item.hexa : item.hex;
     } else if(format == "rgb") {
-      color = item.opacity < 1 ? item.rgba : item.rgb;
+      color = item.alpha < 1 ? item.rgba : item.rgb;
     } else if(format == "hsl") {
-      color = item.opacity < 1 ? item.hsla : item.hsl;
+      color = item.alpha < 1 ? item.hsla : item.hsl;
     } else {
       color = defaultColor(item);
     }

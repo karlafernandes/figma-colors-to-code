@@ -7,8 +7,6 @@ const rgb2hex = (r, g, b, a?) => {
   b = b.toString(16);
   a = Math.round(a * 255).toString(16);
 
-  console.log(a)
-
   if (r.length == 1)
     r = "0" + r;
   if (g.length == 1)
@@ -67,7 +65,7 @@ const rgb2hsl = (r, g, b, a?) => {
   l = (max + min) / RGB_MAX / 2 * LIGHTNESS_MAX;
 
   // Alpha
-  if(!a) {
+  if(a === undefined) {
     return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
   } else {
     return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${a})`;
@@ -105,7 +103,7 @@ const colorCollection = styles.map(style => {
     hexa: hexa,
     hsl: hsl,
     hsla: hsla,
-    opacity: a,
+    alpha: a,
     // remote: color.remote,
     // paints: color.paints,
   }
