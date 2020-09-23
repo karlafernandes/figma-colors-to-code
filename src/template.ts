@@ -80,7 +80,7 @@ export const android = function(params, format?) {
       color = item.hex
     }
 
-    return `  <color name="${item.name.replace(/ /g, '-').replace(/-\/-/g, '-').toLowerCase()}">${color}</color>`
+    return `  <color name="${item.name.replace(/ /g, '_').replace(/_\/_/g, '_').toLowerCase()}">${color}</color>`
   }).join('\n');
 
   const result = start + "\n" + properties + "\n" + end;
