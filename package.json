@@ -15,7 +15,7 @@
     "highlight.js": "^10.1.1",
     "html-webpack-inline-source-plugin": "0.0.10",
     "html-webpack-plugin": "^3.2.0",
-    "prismjs": "^1.20.0",
+    "prismjs": "^1.21.0",
     "style-loader": "^0.23.1",
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
